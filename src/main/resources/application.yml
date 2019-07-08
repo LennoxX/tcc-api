@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: locacao-api
+  jpa:
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/teste
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  #mail:
+  #host: email.ma.gov.br
+  #port: 587
+  #username: naoresponda@seati.ma.gov.br
+  #password: n@0r3sp0nd@ 
+    
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+server:
+  port: 8080

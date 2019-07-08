@@ -1,4 +1,4 @@
-package br.uema.locacao;
+package br.uema.locacao.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
