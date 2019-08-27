@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
 			return token;
 
 		} catch (AuthenticationException e) {
-			throw new CustomException("Username ou password inválido.", HttpStatus.UNAUTHORIZED);
+			throw new CustomException("Usuário ou senha inválidos.", HttpStatus.UNAUTHORIZED);
 		}
 	}
 
