@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.uema.locacao.api.entity.Usuario;
-import br.uema.locacao.api.exceptions.CustomException;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.UsuarioRepository;
 import br.uema.locacao.api.service.UsuarioService;
 

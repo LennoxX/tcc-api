@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.Usuario;
 import br.uema.locacao.api.enums.NivelEnum;
-import br.uema.locacao.api.exceptions.CustomException;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.service.LoginService;
 import br.uema.locacao.api.service.UsuarioService;
 
@@ -44,8 +44,6 @@ public class LoginServiceImpl implements LoginService {
 			String token = jwtTokenService.createToken(username,
 					usuario.getNiveis().stream().map((NivelEnum nivel) -> "ROLE_" + nivel.name())
 							.filter(Objects::nonNull).collect(Collectors.toList()));
-
-			System.out.println(token);
 			return token;
 
 		} catch (AuthenticationException e) {

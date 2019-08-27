@@ -1,4 +1,4 @@
-package br.uema.locacao.api.exceptions;
+package br.uema.locacao.api.exception;
 
 import org.springframework.http.HttpStatus;
 

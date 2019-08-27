@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 
 import br.uema.locacao.api.enums.NivelEnum;
 
-
 @Entity
 @Table(name = "usuario", schema = "seguranca")
 public class Usuario {
@@ -45,7 +44,8 @@ public class Usuario {
 	@JoinTable(name = "nivel_usuario", schema = "seguranca")
 	@Enumerated(EnumType.STRING)
 	@NotNull(message = "Campo 'Níveis' obrigatório!")
-	private List<NivelEnum> niveis;	
+	private List<NivelEnum> niveis;
+	
 	
 	@Email
 	private String email;

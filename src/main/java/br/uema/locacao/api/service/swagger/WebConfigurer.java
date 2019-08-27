@@ -1,4 +1,4 @@
-package br.uema.locacao.api.swagger;
+package br.uema.locacao.api.service.swagger;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

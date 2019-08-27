@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "jwt_token")
+@Table(name = "jwt_token", schema = "seguranca")
 public class JwtToken {
 	
 	@Id

@@ -1,4 +1,4 @@
-package br.uema.locacao.api.swagger;
+package br.uema.locacao.api.service.swagger;
 
 import java.util.ArrayList;
 import java.util.Arrays;

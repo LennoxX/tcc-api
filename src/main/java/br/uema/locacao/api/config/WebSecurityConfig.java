@@ -1,4 +1,4 @@
-package br.uema.locacao.api.security;
+package br.uema.locacao.api.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.uema.locacao.api.filter.JwtTokenFilterConfigurer;
 import br.uema.locacao.api.service.JwtTokenService;
-
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -41,8 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     					"/swagger-ui.html", 
     					"/webjars/**",
     					"/swagger-resources/configuration/ui",
-    					"/swagger-ui.html", "/auth/**", "/api/**", "/admin/**").permitAll(); 
-//    			.antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO")
+    					"/swagger-ui.html", "/auth/**").permitAll().antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO");
 //	    		.antMatchers("/admin/**", "/actuator/**").hasAuthority("ROLE_ADMIN");
 
         // If a user try to access a resource without having enough permissions

@@ -1,4 +1,4 @@
-package br.uema.locacao.api.exceptions;
+package br.uema.locacao.api.exception;
 
 import java.io.IOException;
 import java.util.Set;
@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import br.uema.locacao.api.dto.Response;
 
-
 @RestControllerAdvice
 public class GlobalExceptionHandlerController {
 	
@@ -31,6 +30,10 @@ public class GlobalExceptionHandlerController {
     public ResponseEntity<Response<?>> handleCustomException(CustomException e) throws IOException {
     	Response<?> response = new Response<>();
     	String msg = e.getMessage();
+    	if(e.getHttpStatus() == HttpStatus.NOT_FOUND) {
+    		LOG.error("ERRO: " + msg);
+    		msg = "Not found";
+    	}
     	LOG.error("ERRO: " + msg);
     	response.getErrors().add(msg);
         return ResponseEntity.status(e.getHttpStatus()).body(response);

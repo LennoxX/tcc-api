@@ -7,7 +7,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import br.uema.locacao.api.service.JwtTokenService;
 
-
 public class JwtTokenFilterConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 	
 	private JwtTokenService jwtTokenService;

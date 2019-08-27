@@ -1,4 +1,4 @@
-package br.uema.locacao.api.resources;
+package br.uema.locacao.api.resource;
 
 import java.util.ArrayList;
 import java.util.List;

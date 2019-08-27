@@ -14,10 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import br.uema.locacao.api.exceptions.CustomException;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.service.JwtTokenService;
-
-
 import io.jsonwebtoken.JwtException;
 
 public class JwtTokenFilter extends GenericFilterBean {
