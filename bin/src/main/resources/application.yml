@@ -1,7 +1,4 @@
 spring:
-
-  jmx:
-    default-domain: locacao-api
   application:
     name: locacao-api
   jpa:
@@ -31,8 +28,5 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
 
-  server:
-      port: 8080
-      servlet:
-          path: /*
-
+server:
+  port: 8080
