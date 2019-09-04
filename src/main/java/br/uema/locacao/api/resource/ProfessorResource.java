@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,19 @@ public class ProfessorResource {
 		Response<Professor> response = new Response<>();
 		try {
 			response.setData(service.create(professor));
+			return ResponseEntity.ok().body(response);
+		} catch (Exception e) {
+			response.getErrors().add(e.getMessage());
+			return ResponseEntity.badRequest().body(response);
+		}
+	}
+	
+	@PutMapping
+	public ResponseEntity<Response<Professor>> update(@RequestHeader(value = "Authorization") String authorization,
+			@RequestBody Professor professor) {
+		Response<Professor> response = new Response<>();
+		try {
+			response.setData(service.update(professor));
 			return ResponseEntity.ok().body(response);
 		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
