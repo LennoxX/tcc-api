@@ -17,7 +17,7 @@ public class Professor {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seq_professor")
-	@SequenceGenerator(name = "seq_professor", sequenceName = "seq_professor", schema = "seguranca", allocationSize = 1)
+	@SequenceGenerator(name = "seq_professor", sequenceName = "seq_professor", schema = "locacao", allocationSize = 1)
 	private Long id;
 	
 	private String nome;
