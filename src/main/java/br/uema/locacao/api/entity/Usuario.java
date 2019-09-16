@@ -37,9 +37,7 @@ public class Usuario {
 		
 	//Mesmo que status
 	private boolean ativo = true;
-	private boolean habilitado = true;
-	private boolean expirado = false;
-	private boolean bloqueado = false;
+	
 	@ElementCollection
 	@JoinTable(name = "nivel_usuario", schema = "seguranca")
 	@Enumerated(EnumType.STRING)
@@ -82,29 +80,6 @@ public class Usuario {
 		this.ativo = ativo;
 	}
 	
-	public boolean isHabilitado() {
-		return habilitado;
-	}
-	
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
-	}
-	
-	public boolean isExpirado() {
-		return expirado;
-	}
-	public void setExpirado(boolean expirado) {
-		this.expirado = expirado;
-	}
-	
-	public boolean isBloqueado() {
-		return bloqueado;
-	}
-	
-	public void setBloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
-	}
-
 	public String getNome() {
 		return nome;
 	}

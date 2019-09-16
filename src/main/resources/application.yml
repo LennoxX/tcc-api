@@ -16,7 +16,7 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/locacao
+    url: jdbc:postgresql://servidor.vm:5432/locacao
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

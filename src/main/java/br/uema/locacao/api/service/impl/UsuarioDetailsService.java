@@ -35,7 +35,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 			count++;
 		}
 		PostgresUserDetails userDetails = new PostgresUserDetails(usuario.getUsername(), usuario.getPassword(),
-				usuario.getAtivo(), usuario.isBloqueado(), usuario.isExpirado(), usuario.isHabilitado(),
+				usuario.getAtivo(),false, false, true,
 				authorities);
 		return userDetails;
 	}

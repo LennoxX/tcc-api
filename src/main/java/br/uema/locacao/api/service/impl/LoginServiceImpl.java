@@ -1,6 +1,5 @@
 package br.uema.locacao.api.service.impl;
 
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -8,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -45,9 +45,10 @@ public class LoginServiceImpl implements LoginService {
 					usuario.getNiveis().stream().map((NivelEnum nivel) -> "ROLE_" + nivel.name())
 							.filter(Objects::nonNull).collect(Collectors.toList()));
 			return token;
-
+		
 		} catch (AuthenticationException e) {
-			throw new CustomException("Usuário ou senha inválidos.", HttpStatus.UNAUTHORIZED);
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
+
 		}
 	}
 
@@ -68,7 +69,5 @@ public class LoginServiceImpl implements LoginService {
 		List<String> roleList = jwtTokenService.getRoleList(token);
 		return jwtTokenService.createToken(username, roleList);
 	}
-
-
 
 }
