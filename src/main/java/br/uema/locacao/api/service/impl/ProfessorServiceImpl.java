@@ -11,8 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.uema.locacao.api.entity.Locacao;
 import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.enums.CursoEnum;
+import br.uema.locacao.api.repository.LocacaoRepository;
 import br.uema.locacao.api.repository.ProfessorRepository;
 import br.uema.locacao.api.service.ProfessorService;
 
@@ -21,6 +23,10 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Autowired
 	private ProfessorRepository repository;
+	
+	@Autowired
+	private LocacaoRepository locacaoRepository;
+	
 
 	@Override
 	public Professor create(Professor professor) {
@@ -43,9 +49,20 @@ public class ProfessorServiceImpl implements ProfessorService {
 	}
 
 	@Override
+	public List<Professor> findAllElegiveis() {
+		List<Professor> professores = repository.findAll();
+		List<Locacao> locacoes = locacaoRepository.findAll();
+		for(Locacao l : locacoes) {
+			if(l.getDataFim() != null) {
+				professores.remove(l.getProfessor());
+			}
+		}
+		return professores;
+	}
+	
+	@Override
 	public List<Professor> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
 
 	@Override

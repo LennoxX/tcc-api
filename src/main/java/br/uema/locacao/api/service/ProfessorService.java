@@ -18,6 +18,8 @@ public interface ProfessorService {
 	Page<Professor> findAll(Pageable page);
 
 	List<Professor> findAll();
+	
+	List<Professor> findAllElegiveis();
 
 	void delete(Long id);
 
