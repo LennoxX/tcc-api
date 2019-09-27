@@ -3,6 +3,8 @@ package br.uema.locacao.api.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import br.uema.locacao.api.enums.EnumStatusLocacao;
 
 @Entity
 @Table(name = "locacao", schema = "locacao")
@@ -31,6 +35,9 @@ public class Locacao {
 	@JoinColumn(name = "professor_id")
 	@ManyToOne
 	private Professor professor;
+	
+	@Enumerated(EnumType.STRING)
+	private EnumStatusLocacao status;
 
 	public Long getId() {
 		return id;
@@ -70,6 +77,14 @@ public class Locacao {
 
 	public void setProfessor(Professor professor) {
 		this.professor = professor;
+	}
+
+	public EnumStatusLocacao getStatus() {
+		return status;
+	}
+
+	public void setStatus(EnumStatusLocacao status) {
+		this.status = status;
 	}
 	
 	

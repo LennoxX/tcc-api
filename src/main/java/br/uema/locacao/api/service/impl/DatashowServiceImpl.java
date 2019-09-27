@@ -44,8 +44,12 @@ public class DatashowServiceImpl implements DatashowService {
 
 	@Override
 	public List<Datashow> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
+	}
+	
+	@Override
+	public List<Datashow> findAllDisponiveis() {
+		return repository.findAllByStatus(EnumStatusDatashow.DISPONIVEL);
 	}
 
 	@Override
@@ -78,5 +82,7 @@ public class DatashowServiceImpl implements DatashowService {
 		return repository.findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCaseAndStatus(identificacao,
 				numTombamento, EnumStatusDatashow.valueOf(status), pageable);
 	}
+
+	
 
 }

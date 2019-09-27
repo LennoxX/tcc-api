@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.uema.locacao.api.dto.Response;
 import br.uema.locacao.api.entity.Datashow;
+import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.enums.EnumStatusDatashow;
 import br.uema.locacao.api.service.DatashowService;
 
@@ -93,6 +94,24 @@ public class DatashowResource {
 
 		Page<Datashow> professores = service.findByParameters(page, count, identificacao, numTombamento, status, sort);
 		response.setData(professores);
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping
+	public ResponseEntity<Response<List<Datashow>>> getAll(
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<List<Datashow>> response = new Response<>();
+		List<Datashow> datashows = service.findAll();
+		response.setData(datashows);
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping(value = "disponiveis")
+	public ResponseEntity<Response<List<Datashow>>> getAllDisponiveis(
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<List<Datashow>> response = new Response<>();
+		List<Datashow> datashows = service.findAllDisponiveis();
+		response.setData(datashows);
 		return ResponseEntity.ok(response);
 	}
 

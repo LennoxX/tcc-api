@@ -19,6 +19,8 @@ public interface DatashowService {
 	Page<Datashow> findAll(Pageable page);
 
 	List<Datashow> findAll();
+	
+	List<Datashow> findAllDisponiveis();
 
 	void delete(Long id);
 

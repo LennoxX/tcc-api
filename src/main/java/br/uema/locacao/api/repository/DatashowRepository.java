@@ -1,5 +1,7 @@
 package br.uema.locacao.api.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +19,7 @@ public interface DatashowRepository extends JpaRepository<Datashow, Long> {
 
 	Page<Datashow> findAllByOrderByIdentificacao(Pageable page);
     
+	List<Datashow> findAllByStatus(EnumStatusDatashow status);
 
 	/*
 	 * Page<Professor>

@@ -1,13 +1,18 @@
 package br.uema.locacao.api.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.Locacao;
+import br.uema.locacao.api.enums.EnumStatusLocacao;
 import br.uema.locacao.api.repository.LocacaoRepository;
 import br.uema.locacao.api.service.LocacaoService;
 
@@ -48,27 +53,31 @@ public class LocacaoServiceImpl implements LocacaoService {
 		repository.deleteById(id);
 	}
 
-	/*
-	 * public Page<Locacao> findByParameters(int page, int count, String
-	 * identificacao, String numTombamento, String status, List<String> sort) {
-	 * List<Sort.Order> orders = new ArrayList<>(); for (String order : sort) {
-	 * String[] orderSplit = order.split("!"); String property = orderSplit[0];
-	 * 
-	 * if (orderSplit.length == 1) { orders.add(new Sort.Order(Direction.ASC,
-	 * property)); } else { Sort.Direction direction =
-	 * Sort.Direction.fromString(orderSplit[1]); orders.add(new
-	 * Sort.Order(direction, property)); } }
-	 * 
-	 * Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
-	 * 
-	 * if (status.isEmpty()) { return repository.
-	 * findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCase(
-	 * identificacao, numTombamento, pageable); }
-	 * 
-	 * return repository.
-	 * findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCaseAndStatus
-	 * (identificacao, numTombamento, EnumStatusLocacao.valueOf(status), pageable);
-	 * }
-	 */
+	@Override
+	public Page<Locacao> findByParameters(int page, int count, String professor, String datashow,
+			String status, List<String> sort) {
+		List<Sort.Order> orders = new ArrayList<>();
+		for (String order : sort) {
+			String[] orderSplit = order.split("!");
+			String property = orderSplit[0];
+
+			if (orderSplit.length == 1) {
+				orders.add(new Sort.Order(Direction.ASC, property));
+			} else {
+				Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
+				orders.add(new Sort.Order(direction, property));
+			}
+		}
+
+		Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
+
+		if (status.isEmpty()) {
+			return repository.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCase(professor,
+					datashow, pageable);
+		}
+
+		return repository.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCaseAndStatus(
+				professor, datashow, EnumStatusLocacao.valueOf(status), pageable);
+	}
 
 }
