@@ -59,14 +59,12 @@ public class LocacaoResource {
 		Response<Locacao> response = new Response<>();
 		Datashow temp = service.findById(locacao.getId()).getDatashow();
 		temp.setStatus(EnumStatusDatashow.DISPONIVEL);
-		datashowService.update(temp);
-		
+		datashowService.update(temp);		
 		locacao.setProfessor(service.findById(locacao.getId()).getProfessor());
 		locacao.setDataInicio((service.findById(locacao.getId()).getDataInicio())); 
 		locacao.setStatus(service.findById(locacao.getId()).getStatus());
 		locacao.getDatashow().setStatus(EnumStatusDatashow.EMPRESTADO);
-		datashowService.update(locacao.getDatashow());
-		
+		datashowService.update(locacao.getDatashow());		
 		response.setData(service.update(locacao));
 		return ResponseEntity.ok().body(response);
 	}
@@ -80,22 +78,16 @@ public class LocacaoResource {
 		locacao.setDataFim(new Date());
 		locacao.getDatashow().setStatus(EnumStatusDatashow.DISPONIVEL);
 		datashowService.update(locacao.getDatashow());
-		try {
-			response.setData(service.update(locacao));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(service.update(locacao));
+		return ResponseEntity.ok().body(response);
+		
 	}
 
 	@GetMapping(value = "{page}/{count}")
 	public ResponseEntity<Response<Page<Locacao>>> findAll(@PathVariable int page, @PathVariable int count,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Locacao>> response = new Response<>();
-
 		Pageable pageable = PageRequest.of(page, count);
-
 		Page<Locacao> professores = service.findAll(pageable);
 		response.setData(professores);
 		return ResponseEntity.ok(response);
@@ -105,7 +97,6 @@ public class LocacaoResource {
 	public ResponseEntity<Response<Locacao>> findById(@PathVariable Long id,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Locacao> response = new Response<>();
-
 		response.setData(service.findById(id));
 		return ResponseEntity.ok(response);
 	}
@@ -118,7 +109,6 @@ public class LocacaoResource {
 			@RequestParam(name = "sort", required = false, defaultValue = "id!asc") List<String> sort,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Locacao>> response = new Response<>();
-		Pageable pageable = PageRequest.of(page, count);
 		Page<Locacao> locacoes = service.findByParameters(page, count, professor, datashow, status, sort);
 		response.setData(locacoes);
 		return ResponseEntity.ok(response);

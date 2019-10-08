@@ -2,6 +2,7 @@ package br.uema.locacao.api.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,6 +31,7 @@ public class Usuario {
 	private String nome;
 	//Username
 	@NotEmpty(message = "*Campo 'Usuario', obrigatório.")
+	@Column(unique = true)
 	private String username;
 	
 	@NotEmpty(message = "*Campo 'Password', obrigatório.")
@@ -44,7 +46,7 @@ public class Usuario {
 	@NotNull(message = "Campo 'Níveis' obrigatório!")
 	private List<NivelEnum> niveis;
 	
-	
+	@Column(unique = true)
 	@Email
 	private String email;
 		

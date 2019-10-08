@@ -9,11 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.Locacao;
 import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.enums.CursoEnum;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.LocacaoRepository;
 import br.uema.locacao.api.repository.ProfessorRepository;
 import br.uema.locacao.api.service.ProfessorService;
@@ -23,75 +25,115 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Autowired
 	private ProfessorRepository repository;
-	
+
 	@Autowired
 	private LocacaoRepository locacaoRepository;
-	
 
 	@Override
 	public Professor create(Professor professor) {
-		return repository.save(professor);
+		try {
+			return repository.save(professor);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Professor update(Professor professor) {
-		return repository.save(professor);
+		try {
+			return repository.save(professor);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Professor findById(Long id) {
-		return repository.getOne(id);
+		try {
+			return repository.getOne(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Page<Professor> findAll(Pageable page) {
-		return repository.findAll(page);
+		try {
+			return repository.findAll(page);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public List<Professor> findAllElegiveis() {
-		List<Professor> professores = repository.findAll();
-		List<Locacao> locacoes = locacaoRepository.findAll();
-		for(Locacao l : locacoes) {
-			if(l.getDataFim() != null) {
-				professores.remove(l.getProfessor());
+		try {
+			List<Professor> professores = repository.findAll();
+			List<Locacao> locacoes = locacaoRepository.findAll();
+			for (Locacao l : locacoes) {
+				if (l.getDataFim() != null) {
+					professores.remove(l.getProfessor());
+				}
 			}
+			return professores;
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		}
-		return professores;
+
 	}
-	
+
 	@Override
 	public List<Professor> findAll() {
-		return repository.findAll();
+		try {
+			return repository.findAll();
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	public Page<Professor> findByParameters(int page, int size, String matricula, String nome, String curso,
 			List<String> sort, String authorization) {
-		List<Sort.Order> orders = new ArrayList<>();
-		for (String order : sort) {
-			String[] orderSplit = order.split("!");
-			String property = orderSplit[0];
 
-			if (orderSplit.length == 1) {
-				orders.add(new Sort.Order(Direction.ASC, property));
-			} else {
-				Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
-				orders.add(new Sort.Order(direction, property));
+		try {
+			List<Sort.Order> orders = new ArrayList<>();
+			for (String order : sort) {
+				String[] orderSplit = order.split("!");
+				String property = orderSplit[0];
+				if (orderSplit.length == 1) {
+					orders.add(new Sort.Order(Direction.ASC, property));
+				} else {
+					Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
+					orders.add(new Sort.Order(direction, property));
+				}
 			}
-		}
 
-		Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
-		if (curso.isEmpty()) {
-			return repository.findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCase(nome, matricula, pageable);
-		}
+			Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
+			if (curso.isEmpty()) {
+				return repository.findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCase(nome, matricula,
+						pageable);
+			}
 
-		return repository.findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCaseAndCurso(nome, matricula,
-				CursoEnum.valueOf(curso), pageable);
+			return repository.findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCaseAndCurso(nome, matricula,
+					CursoEnum.valueOf(curso), pageable);
+
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

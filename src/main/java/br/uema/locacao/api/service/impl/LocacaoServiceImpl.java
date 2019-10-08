@@ -9,10 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.Locacao;
 import br.uema.locacao.api.enums.EnumStatusLocacao;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.LocacaoRepository;
 import br.uema.locacao.api.service.LocacaoService;
 
@@ -24,60 +26,96 @@ public class LocacaoServiceImpl implements LocacaoService {
 
 	@Override
 	public Locacao create(Locacao datashow) {
-		return repository.save(datashow);
+		try {
+			return repository.save(datashow);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Locacao update(Locacao datashow) {
-		return repository.save(datashow);
+		try {
+			return repository.save(datashow);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Locacao findById(Long id) {
-		return repository.getOne(id);
+		try {
+			return repository.getOne(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Page<Locacao> findAll(Pageable page) {
-		return repository.findAll(page);
+
+		try {
+			return repository.findAll(page);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public List<Locacao> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			return repository.findAll();
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@Override
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
-	public Page<Locacao> findByParameters(int page, int count, String professor, String datashow,
-			String status, List<String> sort) {
-		List<Sort.Order> orders = new ArrayList<>();
-		for (String order : sort) {
-			String[] orderSplit = order.split("!");
-			String property = orderSplit[0];
+	public Page<Locacao> findByParameters(int page, int count, String professor, String datashow, String status,
+			List<String> sort) {
+		try {
+			List<Sort.Order> orders = new ArrayList<>();
+			for (String order : sort) {
+				String[] orderSplit = order.split("!");
+				String property = orderSplit[0];
 
-			if (orderSplit.length == 1) {
-				orders.add(new Sort.Order(Direction.ASC, property));
-			} else {
-				Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
-				orders.add(new Sort.Order(direction, property));
+				if (orderSplit.length == 1) {
+					orders.add(new Sort.Order(Direction.ASC, property));
+				} else {
+					Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
+					orders.add(new Sort.Order(direction, property));
+				}
 			}
+
+			Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
+
+			if (status.isEmpty()) {
+				return repository.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCase(
+						professor, datashow, pageable);
+			}
+
+			return repository
+					.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCaseAndStatus(
+							professor, datashow, EnumStatusLocacao.valueOf(status), pageable);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		}
 
-		Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
-
-		if (status.isEmpty()) {
-			return repository.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCase(professor,
-					datashow, pageable);
-		}
-
-		return repository.findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCaseAndStatus(
-				professor, datashow, EnumStatusLocacao.valueOf(status), pageable);
 	}
 
 }

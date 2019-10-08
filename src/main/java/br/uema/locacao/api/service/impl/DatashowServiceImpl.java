@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.Datashow;
 import br.uema.locacao.api.enums.EnumStatusDatashow;
+import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.DatashowRepository;
 import br.uema.locacao.api.service.DatashowService;
 
@@ -24,65 +26,104 @@ public class DatashowServiceImpl implements DatashowService {
 
 	@Override
 	public Datashow create(Datashow datashow) {
-		return repository.save(datashow);
+		try {
+			return repository.save(datashow);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Datashow update(Datashow datashow) {
-		return repository.save(datashow);
+
+		try {
+			return repository.save(datashow);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Datashow findById(Long id) {
-		return repository.getOne(id);
+		try {
+			return repository.getOne(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Page<Datashow> findAll(Pageable page) {
-		return repository.findAllByOrderByIdentificacao(page);
+		try {
+			return repository.findAllByOrderByIdentificacao(page);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public List<Datashow> findAll() {
-		return repository.findAll();
+		try {
+			return repository.findAll();
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
-	
+
 	@Override
 	public List<Datashow> findAllDisponiveis() {
-		return repository.findAllByStatus(EnumStatusDatashow.DISPONIVEL);
+		try {
+			return repository.findAllByStatus(EnumStatusDatashow.DISPONIVEL);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	public Page<Datashow> findByParameters(int page, int count, String identificacao, String numTombamento,
 			String status, List<String> sort) {
-		List<Sort.Order> orders = new ArrayList<>();
-		for (String order : sort) {
-			String[] orderSplit = order.split("!");
-			String property = orderSplit[0];
+		try {
+			List<Sort.Order> orders = new ArrayList<>();
+			for (String order : sort) {
+				String[] orderSplit = order.split("!");
+				String property = orderSplit[0];
 
-			if (orderSplit.length == 1) {
-				orders.add(new Sort.Order(Direction.ASC, property));
-			} else {
-				Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
-				orders.add(new Sort.Order(direction, property));
+				if (orderSplit.length == 1) {
+					orders.add(new Sort.Order(Direction.ASC, property));
+				} else {
+					Sort.Direction direction = Sort.Direction.fromString(orderSplit[1]);
+					orders.add(new Sort.Order(direction, property));
+				}
 			}
+
+			Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
+
+			if (status.isEmpty()) {
+				return repository.findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCase(
+						identificacao, numTombamento, pageable);
+			}
+
+			return repository.findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCaseAndStatus(
+					identificacao, numTombamento, EnumStatusDatashow.valueOf(status), pageable);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		}
 
-		Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
-
-		if (status.isEmpty()) {
-			return repository.findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCase(identificacao,
-					numTombamento, pageable);
-		}
-
-		return repository.findByIdentificacaoContainingIgnoreCaseAndNumTombamentoContainingIgnoreCaseAndStatus(identificacao,
-				numTombamento, EnumStatusDatashow.valueOf(status), pageable);
 	}
-
-	
 
 }

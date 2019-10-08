@@ -8,18 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import br.uema.locacao.api.enums.CursoEnum;
 
 @Entity
-@Table(name = "professor", schema = "locacao")
+@Table(name = "professor", schema = "locacao", uniqueConstraints = @UniqueConstraint(columnNames = "matricula"))
 public class Professor {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seq_professor")
 	@SequenceGenerator(name = "seq_professor", sequenceName = "seq_professor", schema = "locacao", allocationSize = 1)
 	private Long id;
-	
+		
 	private String nome;
 	
 	private String matricula;

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import br.uema.locacao.api.entity.Datashow;
-import br.uema.locacao.api.enums.EnumStatusDatashow;
 
 public interface DatashowService {
 

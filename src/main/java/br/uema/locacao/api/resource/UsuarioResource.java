@@ -32,26 +32,15 @@ public class UsuarioResource {
 	@PostMapping
 	public ResponseEntity<Response<Usuario>> register(@RequestBody Usuario usuario) {
 		Response<Usuario> response = new Response<>();
-		try {
-			response.setData(this.usuarioService.create(usuario));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
-
+		response.setData(this.usuarioService.create(usuario));
+		return ResponseEntity.ok().body(response);
 	}
 	
 	@PutMapping
 	public ResponseEntity<Response<Usuario>> update(@RequestBody Usuario usuario) {
 		Response<Usuario> response = new Response<>();
-		try {
-			response.setData(this.usuarioService.update(usuario));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(this.usuarioService.update(usuario));
+		return ResponseEntity.ok().body(response);
 
 	}
 
@@ -75,8 +64,6 @@ public class UsuarioResource {
 			@PathVariable Long id, 
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Usuario> response = new Response<>();
-				
-		
 		response.setData(usuarioService.findById(id));
 		return ResponseEntity.ok(response);
 	}

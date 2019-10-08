@@ -29,75 +29,121 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	@Transactional
 	public Usuario create(Usuario usuario) {
-		if (usuario.getId() != null && usuarioRepository.existsById(usuario.getId()))
-			throw new CustomException("ID de Usuário (" + usuario.getId() + ") já utilizado.", HttpStatus.BAD_REQUEST);
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-		return usuarioRepository.save(usuario);
+		try {
+			if (usuario.getId() != null && usuarioRepository.existsById(usuario.getId()))
+				throw new CustomException("ID de Usuário (" + usuario.getId() + ") já utilizado.",
+						HttpStatus.BAD_REQUEST);
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+			return usuarioRepository.save(usuario);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	@Transactional
 	public Usuario update(Usuario usuario) {
-		if (usuario.getId() == null)
-			throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
-		if (!usuarioRepository.existsById(usuario.getId()))
-			throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
-		usuario.setPassword(usuarioRepository.findById(usuario.getId()).get().getPassword());
-		return usuarioRepository.save(usuario);
+		try {
+			if (usuario.getId() == null)
+				throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
+			if (!usuarioRepository.existsById(usuario.getId()))
+				throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
+			usuario.setPassword(usuarioRepository.findById(usuario.getId()).get().getPassword());
+			return usuarioRepository.save(usuario);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	@Transactional
 	public Usuario updatePassword(Usuario usuario) {
-		if (usuario.getId() == null)
-			throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
-		if (!usuarioRepository.existsById(usuario.getId()))
-			throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-		return usuarioRepository.save(usuario);
+		try {
+			if (usuario.getId() == null)
+				throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
+			if (!usuarioRepository.existsById(usuario.getId()))
+				throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+			return usuarioRepository.save(usuario);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Usuario findByUsername(String username) {
-		Optional<Usuario> opt = usuarioRepository.findByUsername(username);
-		if (opt.isPresent())
-			return opt.get();
-		else
-			throw new CustomException("Usuario não encontrado", HttpStatus.ACCEPTED);
+		try {
+			Optional<Usuario> opt = usuarioRepository.findByUsername(username);
+			if (opt.isPresent())
+				return opt.get();
+			else
+				throw new CustomException("Usuario não encontrado", HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Usuario findById(Long id) {
-		Optional<Usuario> opt = usuarioRepository.findById(id);
-		if (opt.isPresent())
-			return opt.get();
-		else
-			throw new CustomException("Usuario não encontrado", HttpStatus.ACCEPTED);
+		try {
+			Optional<Usuario> opt = usuarioRepository.findById(id);
+			if (opt.isPresent())
+				return opt.get();
+			else
+				throw new CustomException("Usuario não encontrado", HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Usuario> findByNome(int page, int size, String nome) {
-		Pageable pageable = PageRequest.of(page, size);
-		return usuarioRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(nome, pageable);
+		try {
+			Pageable pageable = PageRequest.of(page, size);
+			return usuarioRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(nome, pageable);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public List<Usuario> findAll() {
-		return usuarioRepository.findAll();
+		try {
+			return usuarioRepository.findAll();
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@Override
 	public Page<Usuario> findAll(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		return usuarioRepository.findAll(pageable);
+		try {
+			Pageable pageable = PageRequest.of(page, size);
+			return usuarioRepository.findAll(pageable);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
-	
+
 	@Override
 	public void delete(Long id) {
-		usuarioRepository.deleteById(id);
+		try {
+			usuarioRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 }

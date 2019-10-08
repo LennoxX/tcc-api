@@ -34,35 +34,25 @@ public class ProfessorResource {
 	public ResponseEntity<Response<Professor>> create(@RequestHeader(value = "Authorization") String authorization,
 			@RequestBody Professor professor) {
 		Response<Professor> response = new Response<>();
-		try {
-			response.setData(service.create(professor));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(service.create(professor));
+		return ResponseEntity.ok().body(response);
+
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<Professor>> update(@RequestHeader(value = "Authorization") String authorization,
 			@RequestBody Professor professor) {
 		Response<Professor> response = new Response<>();
-		try {
-			response.setData(service.update(professor));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(service.update(professor));
+		return ResponseEntity.ok().body(response);
+
 	}
 
 	@GetMapping(value = "{page}/{count}")
 	public ResponseEntity<Response<Page<Professor>>> findAll(@PathVariable int page, @PathVariable int count,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Professor>> response = new Response<>();
-
 		Pageable pageable = PageRequest.of(page, count);
-
 		Page<Professor> professores = service.findAll(pageable);
 		response.setData(professores);
 		return ResponseEntity.ok(response);
@@ -76,7 +66,7 @@ public class ProfessorResource {
 		response.setData(professores);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@GetMapping(value = "elegiveis")
 	public ResponseEntity<Response<List<Professor>>> getAllElegiveis(
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
@@ -90,7 +80,6 @@ public class ProfessorResource {
 	public ResponseEntity<Response<Professor>> findById(@PathVariable Long id,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Professor> response = new Response<>();
-
 		response.setData(service.findById(id));
 		return ResponseEntity.ok(response);
 	}
@@ -103,9 +92,6 @@ public class ProfessorResource {
 			@RequestParam(name = "sort", required = false, defaultValue = "nome!asc") List<String> sort,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Professor>> response = new Response<>();
-
-		Pageable pageable = PageRequest.of(page, count);
-
 		Page<Professor> professores = service.findByParameters(page, count, matricula, nome, curso, sort,
 				authorization);
 		response.setData(professores);

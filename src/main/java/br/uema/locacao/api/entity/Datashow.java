@@ -1,5 +1,6 @@
 package br.uema.locacao.api.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,8 +21,10 @@ public class Datashow {
 	@SequenceGenerator(name = "seq_datashow", sequenceName = "seq_datashow", schema = "locacao", allocationSize = 1)
 	private Long id;
 	
+	@Column(unique = true)
 	private String identificacao;
 	
+	@Column(unique = true)
 	private String numTombamento;
 	
 	private boolean possuiHdmi;

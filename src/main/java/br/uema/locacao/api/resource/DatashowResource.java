@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.uema.locacao.api.dto.Response;
 import br.uema.locacao.api.entity.Datashow;
-import br.uema.locacao.api.entity.Professor;
-import br.uema.locacao.api.enums.EnumStatusDatashow;
 import br.uema.locacao.api.service.DatashowService;
 
 @RestController
@@ -37,36 +35,23 @@ public class DatashowResource {
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestBody Datashow datashow) {
 		Response<Datashow> response = new Response<>();
-		try {
-			response.setData(service.create(datashow));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(service.create(datashow));
+		return ResponseEntity.ok().body(response);
 	}
 
 	@PutMapping
 	public ResponseEntity<Response<Datashow>> update(@RequestHeader(value = "Authorization") String authorization,
 			@RequestBody Datashow datashow) {
 		Response<Datashow> response = new Response<>();
-		System.out.println(datashow.getStatus());
-		try {
-			response.setData(service.update(datashow));
-			return ResponseEntity.ok().body(response);
-		} catch (Exception e) {
-			response.getErrors().add(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
+		response.setData(service.update(datashow));
+		return ResponseEntity.ok().body(response);
 	}
 
 	@GetMapping(value = "{page}/{count}")
 	public ResponseEntity<Response<Page<Datashow>>> findAll(@PathVariable int page, @PathVariable int count,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Datashow>> response = new Response<>();
-
 		Pageable pageable = PageRequest.of(page, count);
-
 		Page<Datashow> professores = service.findAll(pageable);
 		response.setData(professores);
 		return ResponseEntity.ok(response);
@@ -76,7 +61,6 @@ public class DatashowResource {
 	public ResponseEntity<Response<Datashow>> findById(@PathVariable Long id,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Datashow> response = new Response<>();
-
 		response.setData(service.findById(id));
 		return ResponseEntity.ok(response);
 	}
@@ -89,9 +73,6 @@ public class DatashowResource {
 			@RequestParam(name = "sort", required = false, defaultValue = "identificacao!asc") List<String> sort,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<Page<Datashow>> response = new Response<>();
-
-		Pageable pageable = PageRequest.of(page, count);
-
 		Page<Datashow> professores = service.findByParameters(page, count, identificacao, numTombamento, status, sort);
 		response.setData(professores);
 		return ResponseEntity.ok(response);
