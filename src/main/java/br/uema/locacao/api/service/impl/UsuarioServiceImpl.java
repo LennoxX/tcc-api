@@ -57,16 +57,19 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	}
 
-	@Override
 	@Transactional
-	public Usuario updatePassword(Usuario usuario) {
+	public Usuario updatePassword(Usuario usuario, String novaSenha) {
 		try {
 			if (usuario.getId() == null)
 				throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
 			if (!usuarioRepository.existsById(usuario.getId()))
 				throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
-			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-			return usuarioRepository.save(usuario);
+			if(!passwordEncoder.matches(usuario.getPassword(), usuarioRepository.getOne(usuario.getId()).getPassword())){
+				throw new CustomException("Senha atual informada é inválida", HttpStatus.BAD_REQUEST);
+			}
+			Usuario usuariotmp = usuarioRepository.getOne(usuario.getId());
+			usuariotmp.setPassword(passwordEncoder.encode(novaSenha));
+			return usuarioRepository.save(usuariotmp);
 		} catch (Exception e) {
 			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		}

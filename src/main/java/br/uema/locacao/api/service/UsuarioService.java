@@ -12,7 +12,7 @@ public interface UsuarioService {
     
     Usuario update(Usuario usuario);
     
-    Usuario updatePassword(Usuario usuario);
+    Usuario updatePassword(Usuario usuario, String novaSenha);
     
     Usuario findById(Long id);
     

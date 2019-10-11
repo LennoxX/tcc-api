@@ -113,6 +113,14 @@ public class Usuario {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", username=" + username + ", password=" + password + ", ativo="
+				+ ativo + ", niveis=" + niveis + ", email=" + email + "]";
+	}
 
 	@Override
 	public boolean equals(Object obj) {
