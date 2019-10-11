@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import br.uema.locacao.api.entity.Locacao;
 import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.enums.CursoEnum;
+import br.uema.locacao.api.enums.EnumStatusLocacao;
 import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.LocacaoRepository;
 import br.uema.locacao.api.repository.ProfessorRepository;
@@ -31,21 +32,21 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	@Override
 	public Professor create(Professor professor) {
-		try {
-			return repository.save(professor);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+
+		if (repository.findByMatricula(professor.getMatricula()) != null) {
+			throw new CustomException("Matrícula já cadastrada.", HttpStatus.BAD_REQUEST);
 		}
+		return repository.save(professor);
 
 	}
 
 	@Override
 	public Professor update(Professor professor) {
-		try {
-			return repository.save(professor);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		Professor profTemp = repository.findByMatricula(professor.getMatricula());
+		if (profTemp != null && profTemp.getId() != professor.getId()) {
+			throw new CustomException("Matrícula já cadastrada.", HttpStatus.BAD_REQUEST);
 		}
+		return repository.save(professor);
 
 	}
 
@@ -75,7 +76,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 			List<Professor> professores = repository.findAll();
 			List<Locacao> locacoes = locacaoRepository.findAll();
 			for (Locacao l : locacoes) {
-				if (l.getDataFim() != null) {
+				if (l.getStatus() != EnumStatusLocacao.CONCLUIDA) {
 					professores.remove(l.getProfessor());
 				}
 			}

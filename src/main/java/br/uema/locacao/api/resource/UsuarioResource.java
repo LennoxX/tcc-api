@@ -79,7 +79,8 @@ public class UsuarioResource {
 	}
 
 	@PutMapping("password")
-	public ResponseEntity<Response<Usuario>> updatePassword(@RequestBody Usuario usuario, @RequestParam String novaSenha, BindingResult result,
+	public ResponseEntity<Response<Usuario>> updatePassword(@RequestBody Usuario usuario,
+			@RequestParam String novaSenha, BindingResult result,
 			@RequestHeader(name = "Authorization", required = false) String authorization) {
 		System.out.println(usuario);
 		Response<Usuario> response = new Response<>();

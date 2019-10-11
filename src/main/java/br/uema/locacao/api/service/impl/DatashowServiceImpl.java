@@ -26,17 +26,18 @@ public class DatashowServiceImpl implements DatashowService {
 
 	@Override
 	public Datashow create(Datashow datashow) {
-		try {
-			return repository.save(datashow);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		if (repository.findByNumTombamento(datashow.getNumTombamento()) != null) {
+			throw new CustomException("Número de Tombamento já cadastrado.", HttpStatus.BAD_REQUEST);
 		}
+		if (repository.findByIdentificacao(datashow.getIdentificacao()) != null) {
+			throw new CustomException("Identificação já cadastrada.", HttpStatus.BAD_REQUEST);
+		}
+		return repository.save(datashow);
 
 	}
 
 	@Override
 	public Datashow update(Datashow datashow) {
-
 		try {
 			return repository.save(datashow);
 		} catch (Exception e) {

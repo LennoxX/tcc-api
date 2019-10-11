@@ -16,4 +16,6 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 	Page<Professor> findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCase(String nome, String matricula,
 			Pageable pageable);
 
+	Professor findByMatricula(String matricula);
+
 }

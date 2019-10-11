@@ -21,6 +21,10 @@ public interface DatashowRepository extends JpaRepository<Datashow, Long> {
     
 	List<Datashow> findAllByStatus(EnumStatusDatashow status);
 
+	Datashow findByNumTombamento(String numTombamento);
+
+	Datashow findByIdentificacao(String identificacao);
+
 	/*
 	 * Page<Professor>
 	 * findByNomeContainingIgnoreCaseAndMatriculaContainingIgnoreCaseAndCurso(String
