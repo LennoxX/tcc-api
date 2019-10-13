@@ -18,6 +18,8 @@ public interface LocacaoService {
 	Page<Locacao> findAll(Pageable page);
 
 	List<Locacao> findAll();
+	
+	List<Locacao> findAllEmAndamento();
 
 	void delete(Long id);
 

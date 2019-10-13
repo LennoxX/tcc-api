@@ -1,5 +1,7 @@
 package br.uema.locacao.api.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +19,6 @@ public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
 
 	Page<Locacao> findByProfessorNomeContainingIgnoreCaseAndDatashowIdentificacaoContainingIgnoreCaseAndStatus(
 			String professor, String datashow, EnumStatusLocacao valueOf, Pageable pageable);
+
+	List<Locacao> findByStatus(EnumStatusLocacao andamento);
 }
