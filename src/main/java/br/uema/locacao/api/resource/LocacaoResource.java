@@ -52,6 +52,15 @@ public class LocacaoResource {
 
 	}
 
+	@GetMapping(value = "dashboard")
+	public ResponseEntity<Response<List<Locacao>>> findAllEmAndamento(
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<List<Locacao>> response = new Response<>();
+		List<Locacao> professores = service.findAllEmAndamento();
+		response.setData(professores);
+		return ResponseEntity.ok(response);
+	}
+
 	@PutMapping
 	public ResponseEntity<Response<Locacao>> atualizar(
 			@RequestHeader(value = "Authorization", required = false) String authorization,
@@ -59,12 +68,12 @@ public class LocacaoResource {
 		Response<Locacao> response = new Response<>();
 		Datashow temp = service.findById(locacao.getId()).getDatashow();
 		temp.setStatus(EnumStatusDatashow.DISPONIVEL);
-		datashowService.update(temp);		
+		datashowService.update(temp);
 		locacao.setProfessor(service.findById(locacao.getId()).getProfessor());
-		locacao.setDataInicio((service.findById(locacao.getId()).getDataInicio())); 
+		locacao.setDataInicio((service.findById(locacao.getId()).getDataInicio()));
 		locacao.setStatus(service.findById(locacao.getId()).getStatus());
 		locacao.getDatashow().setStatus(EnumStatusDatashow.EMPRESTADO);
-		datashowService.update(locacao.getDatashow());		
+		datashowService.update(locacao.getDatashow());
 		response.setData(service.update(locacao));
 		return ResponseEntity.ok().body(response);
 	}
@@ -80,7 +89,7 @@ public class LocacaoResource {
 		datashowService.update(locacao.getDatashow());
 		response.setData(service.update(locacao));
 		return ResponseEntity.ok().body(response);
-		
+
 	}
 
 	@GetMapping(value = "{page}/{count}")
@@ -102,7 +111,7 @@ public class LocacaoResource {
 	}
 
 	@GetMapping(value = "{page}/{count}/parameters")
-	public ResponseEntity<Response<Page<Locacao>>> findAll(@PathVariable int page, @PathVariable int count,
+	public ResponseEntity<Response<Page<Locacao>>> findByParameters(@PathVariable int page, @PathVariable int count,
 			@RequestParam(name = "professor", required = false, defaultValue = "") String professor,
 			@RequestParam(name = "datashow", required = false, defaultValue = "") String datashow,
 			@RequestParam(name = "status", required = false, defaultValue = "") String status,
@@ -113,6 +122,5 @@ public class LocacaoResource {
 		response.setData(locacoes);
 		return ResponseEntity.ok(response);
 	}
-
 
 }

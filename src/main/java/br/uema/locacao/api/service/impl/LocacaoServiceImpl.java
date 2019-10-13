@@ -118,4 +118,13 @@ public class LocacaoServiceImpl implements LocacaoService {
 
 	}
 
+	@Override
+	public List<Locacao> findAllEmAndamento() {
+		try {
+			return repository.findAllByStatus(EnumStatusLocacao.ANDAMENTO);
+		} catch (Exception e) {
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 }

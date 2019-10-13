@@ -21,4 +21,6 @@ public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
 			String professor, String datashow, EnumStatusLocacao valueOf, Pageable pageable);
 
 	List<Locacao> findByStatus(EnumStatusLocacao andamento);
+
+	List<Locacao>  findAllByStatus(EnumStatusLocacao andamento);
 }
