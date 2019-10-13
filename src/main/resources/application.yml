@@ -1,4 +1,7 @@
 spring:
+
+  jmx:
+    default-domain: locacao-api
   application:
     name: locacao-api
   jpa:
@@ -17,16 +20,12 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-  
-  #mail:
-  #host: email.ma.gov.br
-  #port: 587
-  #username: naoresponda@seati.ma.gov.br
-  #password: n@0r3sp0nd@ 
     
   jackson:
     serialization:
-      FAIL_ON_EMPTY_BEANS: false
-
+      FAIL_ON_EMPTY_BEANS: false
 server:
   port: 8080
+  servlet:
+      context-path: /locacao
+

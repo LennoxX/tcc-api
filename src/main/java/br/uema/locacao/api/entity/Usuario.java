@@ -2,6 +2,7 @@ package br.uema.locacao.api.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -30,6 +31,7 @@ public class Usuario {
 	private String nome;
 	//Username
 	@NotEmpty(message = "*Campo 'Usuario', obrigatório.")
+	@Column(unique = true)
 	private String username;
 	
 	@NotEmpty(message = "*Campo 'Password', obrigatório.")
@@ -37,16 +39,14 @@ public class Usuario {
 		
 	//Mesmo que status
 	private boolean ativo = true;
-	private boolean habilitado = true;
-	private boolean expirado = false;
-	private boolean bloqueado = false;
+	
 	@ElementCollection
 	@JoinTable(name = "nivel_usuario", schema = "seguranca")
 	@Enumerated(EnumType.STRING)
 	@NotNull(message = "Campo 'Níveis' obrigatório!")
 	private List<NivelEnum> niveis;
 	
-	
+	@Column(unique = true)
 	@Email
 	private String email;
 		
@@ -82,29 +82,6 @@ public class Usuario {
 		this.ativo = ativo;
 	}
 	
-	public boolean isHabilitado() {
-		return habilitado;
-	}
-	
-	public void setHabilitado(boolean habilitado) {
-		this.habilitado = habilitado;
-	}
-	
-	public boolean isExpirado() {
-		return expirado;
-	}
-	public void setExpirado(boolean expirado) {
-		this.expirado = expirado;
-	}
-	
-	public boolean isBloqueado() {
-		return bloqueado;
-	}
-	
-	public void setBloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
-	}
-
 	public String getNome() {
 		return nome;
 	}
@@ -135,6 +112,14 @@ public class Usuario {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nome=" + nome + ", username=" + username + ", password=" + password + ", ativo="
+				+ ativo + ", niveis=" + niveis + ", email=" + email + "]";
 	}
 
 	@Override

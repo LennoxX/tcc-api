@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     					"/swagger-ui.html", 
     					"/webjars/**",
     					"/swagger-resources/configuration/ui",
-    					"/swagger-ui.html", "/auth/**").permitAll().antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO");
+    					"/swagger-ui.html", "/auth/**").permitAll();//.antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO");
 //	    		.antMatchers("/admin/**", "/actuator/**").hasAuthority("ROLE_ADMIN");
 
         // If a user try to access a resource without having enough permissions

@@ -23,7 +23,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = repository.findByUsername(username).get();
 		if (usuario == null || usuario.getNiveis() == null || usuario.getNiveis().isEmpty()) {
-			throw new CustomException("Username ou password inválido.", HttpStatus.UNAUTHORIZED);
+			throw new CustomException("Usuário ou senha inválidos.", HttpStatus.UNAUTHORIZED);
 		}
 		String[] authorities = new String[usuario.getNiveis().size()];
 		int count = 0;
@@ -35,7 +35,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 			count++;
 		}
 		PostgresUserDetails userDetails = new PostgresUserDetails(usuario.getUsername(), usuario.getPassword(),
-				usuario.getAtivo(), usuario.isBloqueado(), usuario.isExpirado(), usuario.isHabilitado(),
+				usuario.getAtivo(),false, false, true,
 				authorities);
 		return userDetails;
 	}

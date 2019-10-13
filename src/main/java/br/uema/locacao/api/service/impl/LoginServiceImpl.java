@@ -1,6 +1,5 @@
 package br.uema.locacao.api.service.impl;
 
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -45,9 +44,10 @@ public class LoginServiceImpl implements LoginService {
 					usuario.getNiveis().stream().map((NivelEnum nivel) -> "ROLE_" + nivel.name())
 							.filter(Objects::nonNull).collect(Collectors.toList()));
 			return token;
-
+		
 		} catch (AuthenticationException e) {
-			throw new CustomException("Username ou password inválido.", HttpStatus.UNAUTHORIZED);
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
+
 		}
 	}
 
@@ -68,7 +68,5 @@ public class LoginServiceImpl implements LoginService {
 		List<String> roleList = jwtTokenService.getRoleList(token);
 		return jwtTokenService.createToken(username, roleList);
 	}
-
-
 
 }
