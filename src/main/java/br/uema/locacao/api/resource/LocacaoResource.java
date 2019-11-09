@@ -122,5 +122,15 @@ public class LocacaoResource {
 		response.setData(locacoes);
 		return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping(value = "relatorio/{dataInicio}/{dataFim}")
+	public ResponseEntity<Response<List<Locacao>>> relatorioByPeriodo(@PathVariable String dataInicio, @PathVariable String dataFim,			
+			@RequestParam(name = "sort", required = false, defaultValue = "id!asc") List<String> sort,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<List<Locacao>> response = new Response<>();
+		List<Locacao> locacoes = service.relatorioByPeriodo(dataInicio, dataFim);
+		response.setData(locacoes);
+		return ResponseEntity.ok(response);
+	}
 
 }

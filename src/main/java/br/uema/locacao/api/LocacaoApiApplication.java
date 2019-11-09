@@ -46,7 +46,7 @@ public class LocacaoApiApplication extends SpringBootServletInitializer {
 			usuario.setPassword(passwordEncoder.encode("@dm1n1str@dor"));
 			usuario.setEmail("email@mail.com");
 			usuario.setAtivo(true);
-			usuario.setNiveis(niveis);
+			usuario.setNivel(NivelEnum.ADMIN);
 
 			repository.save(usuario);
 		}

@@ -26,6 +26,8 @@ public interface LocacaoService {
 	Page<Locacao> findByParameters(int page, int count, String professor, String datashow, String status,
 			List<String> sort);
 
+	List<Locacao> relatorioByPeriodo(String dataInicio, String dataFim);
+
 	/*
 	 * Page<Locacao> findByParameters(int page, int count, String identificacao,
 	 * String numTombamento, String status, List<String> sort);

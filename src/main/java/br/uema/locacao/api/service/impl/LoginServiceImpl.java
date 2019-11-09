@@ -1,5 +1,6 @@
 package br.uema.locacao.api.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,14 +35,11 @@ public class LoginServiceImpl implements LoginService {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			Usuario usuario = usuarioService.findByUsername(username);
-			if (usuario == null || usuario.getNiveis() == null || usuario.getNiveis().isEmpty()) {
-				throw new CustomException("Invalid username or password.", HttpStatus.UNAUTHORIZED);
-			}
-			// NOTE: normally we dont need to add "ROLE_" prefix. Spring does automatically
-			// for us.
-			// Since we are using custom token using JWT we should add ROLE_ prefix
+			
+			List<NivelEnum> lista = new ArrayList<NivelEnum>();
+			lista.add(usuario.getNivel());
 			String token = jwtTokenService.createToken(username,
-					usuario.getNiveis().stream().map((NivelEnum nivel) -> "ROLE_" + nivel.name())
+					lista.stream().map((NivelEnum nivel) -> "ROLE_" + nivel.name())
 							.filter(Objects::nonNull).collect(Collectors.toList()));
 			return token;
 		

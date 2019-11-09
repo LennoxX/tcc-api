@@ -22,21 +22,12 @@ public class UsuarioDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = repository.findByUsername(username).get();
-		if (usuario == null || usuario.getNiveis() == null || usuario.getNiveis().isEmpty()) {
+		if (usuario == null || usuario.getNivel() == null) {
 			throw new CustomException("Usuário ou senha inválidos.", HttpStatus.UNAUTHORIZED);
 		}
-		String[] authorities = new String[usuario.getNiveis().size()];
-		int count = 0;
-		for (NivelEnum nivel : usuario.getNiveis()) {
-			// NOTE: normally we dont need to add "ROLE_" prefix. Spring does automatically
-			// for us.
-			// Since we are using custom token using JWT we should add ROLE_ prefix
-			authorities[count] = "ROLE_" + nivel.name();
-			count++;
-		}
+
 		PostgresUserDetails userDetails = new PostgresUserDetails(usuario.getUsername(), usuario.getPassword(),
-				usuario.getAtivo(),false, false, true,
-				authorities);
+				usuario.getAtivo(), false, false, true, usuario.getNivel().name());
 		return userDetails;
 	}
 
