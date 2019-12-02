@@ -60,11 +60,4 @@ public class LoginServiceImpl implements LoginService {
 		return jwtTokenService.validateToken(token);
 	}
 
-	@Override
-	public String createNewToken(String token) {
-		String username = jwtTokenService.getUsername(token);
-		List<String> roleList = jwtTokenService.getRoleList(token);
-		return jwtTokenService.createToken(username, roleList);
-	}
-
 }

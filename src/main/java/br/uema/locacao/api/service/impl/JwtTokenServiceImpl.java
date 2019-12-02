@@ -46,12 +46,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-        String token =  Jwts.builder()//
-                .setClaims(claims)//
-                .setIssuedAt(now)//
-                .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, secretKey)//
-                .compact();
+        String token =  Jwts.builder().setClaims(claims).setIssuedAt(now).setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
         jwtTokenRepository.save(new JwtToken(token));
         return token;
     }
@@ -59,9 +55,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     @Override
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader(AUTHORIZATION);
-        /*if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
-        }*/
         if (bearerToken != null ) {
             return bearerToken;
         }
@@ -101,9 +94,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     
     @Override
     public Authentication getAuthentication(String token) {
-        //using data base: uncomment when you want to fetch data from data base
-        //UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
-        //from token take user value. comment below line for changing it taking from data base
         UserDetails userDetails = getUserDetails(token);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

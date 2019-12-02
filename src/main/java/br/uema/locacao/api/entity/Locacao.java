@@ -20,22 +20,26 @@ import br.uema.locacao.api.enums.EnumStatusLocacao;
 public class Locacao {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seq_locacao")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_locacao")
 	@SequenceGenerator(name = "seq_locacao", sequenceName = "seq_locacao", schema = "locacao", allocationSize = 1)
 	private Long id;
-	
+
 	private Date dataInicio;
-	
+
 	private Date dataFim;
-	
+
 	@JoinColumn(name = "datashow_id")
 	@ManyToOne
 	private Datashow datashow;
-	
+
 	@JoinColumn(name = "professor_id")
 	@ManyToOne
 	private Professor professor;
-	
+
+	@JoinColumn(name = "usuario_id")
+	@ManyToOne
+	private Usuario usuario;
+
 	@Enumerated(EnumType.STRING)
 	private EnumStatusLocacao status;
 
@@ -86,7 +90,13 @@ public class Locacao {
 	public void setStatus(EnumStatusLocacao status) {
 		this.status = status;
 	}
-	
-	
-	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 }

@@ -66,7 +66,7 @@ public class DatashowResource {
 	}
 
 	@GetMapping(value = "{page}/{count}/parameters")
-	public ResponseEntity<Response<Page<Datashow>>> findAll(@PathVariable int page, @PathVariable int count,
+	public ResponseEntity<Response<Page<Datashow>>> findAllByParameters(@PathVariable int page, @PathVariable int count,
 			@RequestParam(name = "identificacao", required = false, defaultValue = "") String identificacao,
 			@RequestParam(name = "numTombamento", required = false, defaultValue = "") String numTombamento,			
 			@RequestParam(name = "status", required = false, defaultValue = "") String status,

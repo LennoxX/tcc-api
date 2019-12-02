@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import br.uema.locacao.api.entity.PostgresUserDetails;
 import br.uema.locacao.api.entity.Usuario;
-import br.uema.locacao.api.enums.NivelEnum;
 import br.uema.locacao.api.exception.CustomException;
 import br.uema.locacao.api.repository.UsuarioRepository;
 

@@ -55,7 +55,7 @@ public class ProfessorServiceImpl implements ProfessorService {
 		try {
 			return repository.getOne(id);
 		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+			throw new CustomException(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}

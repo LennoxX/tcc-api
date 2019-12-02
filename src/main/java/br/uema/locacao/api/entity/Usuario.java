@@ -1,52 +1,62 @@
 package br.uema.locacao.api.entity;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import br.uema.locacao.api.enums.CursoEnum;
 import br.uema.locacao.api.enums.NivelEnum;
 
 @Entity
-@Table(name = "usuario", schema = "seguranca")
+@Table(name = "usuario", schema = "seguranca", uniqueConstraints = @UniqueConstraint(columnNames = { "username",
+		"email" }))
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
 	@SequenceGenerator(name = "seq_usuario", sequenceName = "seq_usuario", schema = "seguranca", allocationSize = 1)
 	private Long id;
+
 	@NotEmpty(message = "*Campo 'Nome', obrigatório.")
+	@NotBlank
+	@NotNull
 	private String nome;
-	// Username
-	@NotEmpty(message = "*Campo 'Usuario', obrigatório.")
-	@Column(unique = true)
+
+	@NotEmpty(message = "*Campo 'Username', obrigatório.")
+	@NotBlank
+	@NotNull
 	private String username;
 
 	@NotEmpty(message = "*Campo 'Password', obrigatório.")
+	@NotBlank
+	@NotNull
 	private String password;
 
-	// Mesmo que status
-	private boolean ativo = true;
+	private boolean ativo;
 
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "Campo 'Níveis' obrigatório!")
+	@NotNull(message = "Campo 'Nível' obrigatório!")
 	private NivelEnum nivel;
 
-	@Column(unique = true)
 	@Email
+	@NotEmpty(message = "*Campo 'Email', obrigatório.")
+	@NotNull
+	@NotBlank
 	private String email;
+
+	@Enumerated(EnumType.STRING)
+	@NotNull(message = "Campo 'Curso' obrigatório!")
+	private CursoEnum curso;
 
 	public Long getId() {
 		return id;
@@ -102,6 +112,14 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public CursoEnum getCurso() {
+		return curso;
+	}
+
+	public void setCurso(CursoEnum curso) {
+		this.curso = curso;
 	}
 
 	@Override

@@ -8,6 +8,4 @@ public interface LoginService {
 
 	Boolean isValidToken(String token);
 
-	String createNewToken(String token);
-
 }

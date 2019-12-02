@@ -25,7 +25,9 @@ import br.uema.locacao.api.entity.Locacao;
 import br.uema.locacao.api.enums.EnumStatusDatashow;
 import br.uema.locacao.api.enums.EnumStatusLocacao;
 import br.uema.locacao.api.service.DatashowService;
+import br.uema.locacao.api.service.JwtTokenService;
 import br.uema.locacao.api.service.LocacaoService;
+import br.uema.locacao.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/api/locacao")
@@ -36,6 +38,12 @@ public class LocacaoResource {
 	private LocacaoService service;
 
 	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private JwtTokenService tokenService;
+
+	@Autowired
 	private DatashowService datashowService;
 
 	@PostMapping
@@ -43,6 +51,7 @@ public class LocacaoResource {
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestBody Locacao locacao) {
 		Response<Locacao> response = new Response<>();
+		locacao.setUsuario(usuarioService.findByUsername(tokenService.getUsername(authorization)));
 		locacao.setStatus(EnumStatusLocacao.ANDAMENTO);
 		locacao.getDatashow().setStatus(EnumStatusDatashow.EMPRESTADO);
 		datashowService.update(locacao.getDatashow());
@@ -52,17 +61,8 @@ public class LocacaoResource {
 
 	}
 
-	@GetMapping(value = "dashboard")
-	public ResponseEntity<Response<List<Locacao>>> findAllEmAndamento(
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		Response<List<Locacao>> response = new Response<>();
-		List<Locacao> professores = service.findAllEmAndamento();
-		response.setData(professores);
-		return ResponseEntity.ok(response);
-	}
-
 	@PutMapping
-	public ResponseEntity<Response<Locacao>> atualizar(
+	public ResponseEntity<Response<Locacao>> update(
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestBody Locacao locacao) {
 		Response<Locacao> response = new Response<>();
@@ -76,6 +76,46 @@ public class LocacaoResource {
 		datashowService.update(locacao.getDatashow());
 		response.setData(service.update(locacao));
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping(value = "{page}/{count}")
+	public ResponseEntity<Response<Page<Locacao>>> findAll(@PathVariable int page, @PathVariable int count,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<Page<Locacao>> response = new Response<>();
+		Pageable pageable = PageRequest.of(page, count);
+		Page<Locacao> professores = service.findAll(pageable);
+		response.setData(professores);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(value = "dashboard")
+	public ResponseEntity<Response<List<Locacao>>> getAllEmAndamento(
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<List<Locacao>> response = new Response<>();
+		List<Locacao> professores = service.findAllEmAndamento();
+		response.setData(professores);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(value = "{id}")
+	public ResponseEntity<Response<Locacao>> findById(@PathVariable Long id,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<Locacao> response = new Response<>();
+		response.setData(service.findById(id));
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping(value = "{page}/{count}/parameters")
+	public ResponseEntity<Response<Page<Locacao>>> findAllByParameters(@PathVariable int page, @PathVariable int count,
+			@RequestParam(name = "professor", required = false, defaultValue = "") String professor,
+			@RequestParam(name = "datashow", required = false, defaultValue = "") String datashow,
+			@RequestParam(name = "status", required = false, defaultValue = "") String status,
+			@RequestParam(name = "sort", required = false, defaultValue = "id!asc") List<String> sort,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		Response<Page<Locacao>> response = new Response<>();
+		Page<Locacao> locacoes = service.findByParameters(page, count, professor, datashow, status, sort);
+		response.setData(locacoes);
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("{id}/finalizar")
@@ -92,43 +132,12 @@ public class LocacaoResource {
 
 	}
 
-	@GetMapping(value = "{page}/{count}")
-	public ResponseEntity<Response<Page<Locacao>>> findAll(@PathVariable int page, @PathVariable int count,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		Response<Page<Locacao>> response = new Response<>();
-		Pageable pageable = PageRequest.of(page, count);
-		Page<Locacao> professores = service.findAll(pageable);
-		response.setData(professores);
-		return ResponseEntity.ok(response);
-	}
-
-	@GetMapping(value = "{id}")
-	public ResponseEntity<Response<Locacao>> findById(@PathVariable Long id,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		Response<Locacao> response = new Response<>();
-		response.setData(service.findById(id));
-		return ResponseEntity.ok(response);
-	}
-
-	@GetMapping(value = "{page}/{count}/parameters")
-	public ResponseEntity<Response<Page<Locacao>>> findByParameters(@PathVariable int page, @PathVariable int count,
-			@RequestParam(name = "professor", required = false, defaultValue = "") String professor,
-			@RequestParam(name = "datashow", required = false, defaultValue = "") String datashow,
-			@RequestParam(name = "status", required = false, defaultValue = "") String status,
-			@RequestParam(name = "sort", required = false, defaultValue = "id!asc") List<String> sort,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		Response<Page<Locacao>> response = new Response<>();
-		Page<Locacao> locacoes = service.findByParameters(page, count, professor, datashow, status, sort);
-		response.setData(locacoes);
-		return ResponseEntity.ok(response);
-	}
-	
-	@GetMapping(value = "relatorio/{dataInicio}/{dataFim}")
-	public ResponseEntity<Response<List<Locacao>>> relatorioByPeriodo(@PathVariable String dataInicio, @PathVariable String dataFim,			
-			@RequestParam(name = "sort", required = false, defaultValue = "id!asc") List<String> sort,
+	@GetMapping(value = "relatorio/{inicioPeriodo}/{fimPeriodo}")
+	public ResponseEntity<Response<List<Locacao>>> relatorioByPeriodo(@PathVariable String inicioPeriodo,
+			@PathVariable String fimPeriodo,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		Response<List<Locacao>> response = new Response<>();
-		List<Locacao> locacoes = service.relatorioByPeriodo(dataInicio, dataFim);
+		List<Locacao> locacoes = service.relatorioByPeriodo(inicioPeriodo, fimPeriodo);
 		response.setData(locacoes);
 		return ResponseEntity.ok(response);
 	}

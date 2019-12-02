@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import br.uema.locacao.api.enums.EnumStatusDatashow;
 
@@ -21,8 +24,14 @@ public class Datashow {
 	@SequenceGenerator(name = "seq_datashow", sequenceName = "seq_datashow", schema = "locacao", allocationSize = 1)
 	private Long id;
 	
+	@NotEmpty(message = "*Campo 'Identificação' obrigatório")
+	@NotNull
+	@NotBlank
 	private String identificacao;
 	
+	@NotEmpty(message = "*Campo 'Número de Tombamento' obrigatório")
+	@NotNull
+	@NotBlank
 	private String numTombamento;
 	
 	private boolean possuiHdmi;
