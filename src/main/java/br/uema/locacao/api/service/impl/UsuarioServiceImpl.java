@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.entity.Usuario;
 import br.uema.locacao.api.enums.NivelEnum;
 import br.uema.locacao.api.exception.CustomException;

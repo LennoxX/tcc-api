@@ -19,7 +19,6 @@ import br.uema.locacao.api.dto.Response;
 import br.uema.locacao.api.entity.AuthResponse;
 import br.uema.locacao.api.entity.LoginRequest;
 import br.uema.locacao.api.entity.Usuario;
-import br.uema.locacao.api.service.JwtTokenService;
 import br.uema.locacao.api.service.LoginService;
 import br.uema.locacao.api.service.UsuarioService;
 

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.uema.locacao.api.dto.Response;
-import br.uema.locacao.api.entity.Professor;
 import br.uema.locacao.api.entity.Usuario;
 import br.uema.locacao.api.enums.NivelEnum;
 import br.uema.locacao.api.exception.CustomException;
