@@ -13,7 +13,7 @@
 	<artifactId>locacao-api</artifactId>
 	<version>0.0.1</version>
 	<name>locacao-api</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<description>API do sistema de locação</description>
 
 	<properties>
@@ -43,12 +43,16 @@
 			</exclusions> -->
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 		</dependency>
-
+		
+		
+ -->
+ 
+ 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -94,6 +98,7 @@
 	</dependencies>
 
 	<build>
+	<finalName>docker-locacao-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

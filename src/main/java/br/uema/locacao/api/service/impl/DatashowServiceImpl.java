@@ -79,6 +79,7 @@ public class DatashowServiceImpl implements DatashowService {
 	@Override
 	public List<Datashow> findAllDisponiveis() {
 		try {
+			System.out.println(repository.findAllByStatus(EnumStatusDatashow.DISPONIVEL).size());
 			return repository.findAllByStatus(EnumStatusDatashow.DISPONIVEL);
 		} catch (Exception e) {
 			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);

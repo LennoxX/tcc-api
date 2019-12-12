@@ -1,5 +1,6 @@
 package br.uema.locacao.api.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -23,4 +24,6 @@ public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
 	List<Locacao> findByStatus(EnumStatusLocacao andamento);
 
 	List<Locacao>  findAllByStatus(EnumStatusLocacao andamento);
+	
+	List<Locacao> findAllByDataInicioGreaterThanEqualAndDataInicioLessThanEqualAndStatus(Date dataInicio, Date dataFim, EnumStatusLocacao status);
 }

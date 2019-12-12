@@ -1,5 +1,7 @@
 package br.uema.locacao.api.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +127,17 @@ public class LocacaoServiceImpl implements LocacaoService {
 		} catch (Exception e) {
 			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}
+
+	@Override
+	public List<Locacao> relatorioByPeriodo(String dataInicio, String dataFim) {		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			return repository.findAllByDataInicioGreaterThanEqualAndDataInicioLessThanEqualAndStatus(sdf.parse(dataInicio), sdf.parse(dataFim), EnumStatusLocacao.CONCLUIDA);
+		} catch (ParseException e) {
+			
+		}
+		return null;
 	}
 
 }

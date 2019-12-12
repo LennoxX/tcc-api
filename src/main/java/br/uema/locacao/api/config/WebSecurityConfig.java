@@ -23,34 +23,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        // Disable CSRF (cross site request forgery)
         http.cors().and().csrf().disable();
-
-        // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Entry points
-        http
-    		.authorizeRequests()
-    			.antMatchers("/v2/api-docs", 
-    					"/configuration/ui", 
-    					"/swagger-resources", 
-    					"/configuration/security", 
-    					"/swagger-ui.html", 
-    					"/webjars/**",
-    					"/swagger-resources/configuration/ui",
-    					"/swagger-ui.html", "/auth/**").permitAll();//.antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO");
-//	    		.antMatchers("/admin/**", "/actuator/**").hasAuthority("ROLE_ADMIN");
-
-        // If a user try to access a resource without having enough permissions
-        http.exceptionHandling().accessDeniedPage("/login");
-
-        // Apply JWT
+        http.authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui","/swagger-resources", "/configuration/security", 
+    					"/swagger-ui.html", "/webjars/**","/swagger-resources/configuration/ui", "/swagger-ui.html", "/auth/**")
+        .permitAll().antMatchers("/api/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USUARIO");
         http.apply(new JwtTokenFilterConfigurer(jwtTokenService));
-
-        // Optional, if you want to test the API from a browser
-        // http.httpBasic();
     }
     
     @Bean

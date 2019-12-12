@@ -19,7 +19,6 @@ import br.uema.locacao.api.dto.Response;
 import br.uema.locacao.api.entity.AuthResponse;
 import br.uema.locacao.api.entity.LoginRequest;
 import br.uema.locacao.api.entity.Usuario;
-import br.uema.locacao.api.service.JwtTokenService;
 import br.uema.locacao.api.service.LoginService;
 import br.uema.locacao.api.service.UsuarioService;
 
@@ -30,10 +29,7 @@ public class LoginResource {
 
 	@Autowired
 	private LoginService loginService;
-	
-	@Autowired
-	private JwtTokenService jwtTokenService;
-	
+		
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -69,11 +65,6 @@ public class LoginResource {
 		return new ResponseEntity<AuthResponse>(new AuthResponse("Logout Failed", null), headers, HttpStatus.NOT_MODIFIED);
 	}
 
-	/**
-	 *
-	 * @param token
-	 * @return boolean. if request reach here it means it is a valid token.
-	 */
 	@PostMapping("/valid/token")
 	@ResponseBody
 	public ResponseEntity<Response<Boolean>> isValidToken(@RequestHeader(value = "Authorization") String token) {
@@ -82,25 +73,6 @@ public class LoginResource {
 		return ResponseEntity.ok().body(r);
 	}
 
-	@PostMapping("/signin/token")
-	@ResponseBody
-	public ResponseEntity<AuthResponse> createNewToken(@RequestHeader(value = "Authorization") String token) {
-		String newToken = loginService.createNewToken(token);
-		
-		HttpHeaders headers = new HttpHeaders();
-		List<String> headerList = new ArrayList<>();
-		List<String> exposeList = new ArrayList<>();
-		headerList.add("Content-Type");
-		headerList.add("Accept");
-		headerList.add("X-Requested-With");
-		headerList.add("Authorization");
-		headers.setAccessControlAllowHeaders(headerList);
-		exposeList.add("Authorization");
-		headers.setAccessControlExposeHeaders(exposeList);
-		headers.set("Authorization", newToken);
-		Usuario usuario = usuarioService.findByUsername(jwtTokenService.getUsername(newToken));
-		usuario.setPassword("");
-		return new ResponseEntity<AuthResponse>(new AuthResponse(newToken, usuario), headers, HttpStatus.CREATED);
-	}
+
 	
 }

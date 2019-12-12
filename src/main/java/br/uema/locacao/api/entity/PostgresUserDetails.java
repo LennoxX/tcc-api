@@ -22,7 +22,7 @@ public class PostgresUserDetails implements UserDetails {
     private boolean isEnabled;
     private List<GrantedAuthority> grantedAuthorities;
 
-    public PostgresUserDetails(String username, String password, Boolean active, boolean isLocked, boolean isExpired, boolean isEnabled, String [] authorities) {
+    public PostgresUserDetails(String username, String password, Boolean active, boolean isLocked, boolean isExpired, boolean isEnabled, String authorities) {
         this.username = username;
         this.password = password;
         this.active = active;

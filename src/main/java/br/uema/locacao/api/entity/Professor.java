@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import br.uema.locacao.api.enums.CursoEnum;
 
@@ -20,12 +23,19 @@ public class Professor {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "seq_professor")
 	@SequenceGenerator(name = "seq_professor", sequenceName = "seq_professor", schema = "locacao", allocationSize = 1)
 	private Long id;
-		
+	
+	@NotEmpty(message = "*Campo 'Nome', obrigatório.")
+	@NotNull
+	@NotBlank
 	private String nome;
 	
+	@NotEmpty(message = "*Campo 'Matrícula', obrigatório.")
+	@NotNull
+	@NotBlank
 	private String matricula;
 	
 	@Enumerated(EnumType.STRING)
+	@NotNull(message = "Campo 'Curso' obrigatório!")
 	private CursoEnum curso;
 
 	public Long getId() {

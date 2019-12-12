@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.uema.locacao.api.entity.Usuario;
+import br.uema.locacao.api.enums.CursoEnum;
 import br.uema.locacao.api.enums.NivelEnum;
 import br.uema.locacao.api.repository.UsuarioRepository;
 
@@ -45,8 +46,9 @@ public class LocacaoApiApplication extends SpringBootServletInitializer {
 			usuario.setUsername("admin"); 
 			usuario.setPassword(passwordEncoder.encode("@dm1n1str@dor"));
 			usuario.setEmail("email@mail.com");
+			usuario.setCurso(CursoEnum.COMPUTACAO);
 			usuario.setAtivo(true);
-			usuario.setNiveis(niveis);
+			usuario.setNivel(NivelEnum.ADMIN);
 
 			repository.save(usuario);
 		}
