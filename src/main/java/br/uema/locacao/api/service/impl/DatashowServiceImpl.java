@@ -87,16 +87,6 @@ public class DatashowServiceImpl implements DatashowService {
 
 	}
 
-	@Override
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
 	public Page<Datashow> findByParameters(int page, int count, String identificacao, String numTombamento,
 			String status, List<String> sort) {
 		try {

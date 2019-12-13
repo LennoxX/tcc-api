@@ -21,8 +21,6 @@ public interface DatashowService {
 	
 	List<Datashow> findAllDisponiveis();
 
-	void delete(Long id);
-
 	Page<Datashow> findByParameters(int page, int count, String identificacao, String numTombamento, String status, List<String> sort);
 
 	/*

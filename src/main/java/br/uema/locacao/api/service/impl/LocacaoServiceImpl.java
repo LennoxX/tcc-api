@@ -78,16 +78,6 @@ public class LocacaoServiceImpl implements LocacaoService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	@Override
 	public Page<Locacao> findByParameters(int page, int count, String professor, String datashow, String status,
 			List<String> sort) {
 		try {

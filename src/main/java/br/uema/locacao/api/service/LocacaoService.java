@@ -21,8 +21,6 @@ public interface LocacaoService {
 	
 	List<Locacao> findAllEmAndamento();
 
-	void delete(Long id);
-
 	Page<Locacao> findByParameters(int page, int count, String professor, String datashow, String status,
 			List<String> sort);
 

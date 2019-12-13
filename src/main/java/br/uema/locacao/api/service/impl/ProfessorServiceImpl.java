@@ -97,16 +97,6 @@ public class ProfessorServiceImpl implements ProfessorService {
 
 	}
 
-	@Override
-	public void delete(Long id) {
-		try {
-			repository.deleteById(id);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
 	public Page<Professor> findByParameters(int page, int size, String matricula, String nome, String curso,
 			List<String> sort, String authorization) {
 
