@@ -68,7 +68,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 				throw new CustomException("ID da Usuário não informado.", HttpStatus.BAD_REQUEST);
 			if (!usuarioRepository.existsById(usuario.getId()))
 				throw new CustomException("Usuario não encontrado.", HttpStatus.BAD_REQUEST);
-			if(!passwordEncoder.matches(usuario.getPassword(), usuarioRepository.getOne(usuario.getId()).getPassword())){
+			if (!passwordEncoder.matches(usuario.getPassword(),
+					usuarioRepository.getOne(usuario.getId()).getPassword())) {
 				throw new CustomException("Senha atual informada é inválida", HttpStatus.BAD_REQUEST);
 			}
 			Usuario usuariotmp = usuarioRepository.getOne(usuario.getId());
@@ -144,16 +145,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public void delete(Long id) {
-		try {
-			usuarioRepository.deleteById(id);
-		} catch (Exception e) {
-			throw new CustomException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	@Override
 	public Page<Usuario> findByParameters(int page, int count, String status, String nome, String nivel, String email,
 			List<String> sort, String authorization) {
 		try {
@@ -171,17 +162,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 			Pageable pageable = PageRequest.of(page, count, Sort.by(orders));
 			if (status.isEmpty()) {
-				if(nivel.isEmpty()) {
-					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCase(nome, email, pageable);
+				if (nivel.isEmpty()) {
+					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCase(nome, email,
+							pageable);
 				} else {
-					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndNivel(nome, email, NivelEnum.valueOf(nivel), pageable);
+					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndNivel(nome,
+							email, NivelEnum.valueOf(nivel), pageable);
 				}
-				
-			}else {
-				if(nivel.isEmpty()) {
-					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndAtivo(nome, email, Boolean.parseBoolean(status), pageable);
+
+			} else {
+				if (nivel.isEmpty()) {
+					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndAtivo(nome,
+							email, Boolean.parseBoolean(status), pageable);
 				} else {
-					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndNivelAndAtivo(nome, email, NivelEnum.valueOf(nivel),Boolean.parseBoolean(status) , pageable);
+					return usuarioRepository.findByNomeContainingIgnoreCaseAndEmailContainingIgnoreCaseAndNivelAndAtivo(
+							nome, email, NivelEnum.valueOf(nivel), Boolean.parseBoolean(status), pageable);
 				}
 			}
 

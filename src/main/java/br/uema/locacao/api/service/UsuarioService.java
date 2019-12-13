@@ -23,8 +23,6 @@ public interface UsuarioService {
     Page<Usuario> findAll(int page, int size);
     
     List<Usuario> findAll();
-    
-    void delete(Long id);
 
 	Page<Usuario> findByParameters(int page, int count, String status, String nome, String nivel, String email,
 			List<String> sort, String authorization);

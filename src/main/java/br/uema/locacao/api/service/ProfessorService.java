@@ -21,8 +21,6 @@ public interface ProfessorService {
 	
 	List<Professor> findAllElegiveis();
 
-	void delete(Long id);
-
 	Page<Professor> findByParameters(int page, int size, String matricula, String nome, String curso, List<String> sort,
 			String authorization);
 
