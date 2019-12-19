@@ -122,8 +122,9 @@ public class LocacaoServiceImpl implements LocacaoService {
 	@Override
 	public List<Locacao> relatorioByPeriodo(String dataInicio, String dataFim) {		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		try {
-			return repository.findAllByDataInicioGreaterThanEqualAndDataInicioLessThanEqualAndStatus(sdf.parse(dataInicio), sdf.parse(dataFim), EnumStatusLocacao.CONCLUIDA);
+			return repository.findAllByDataInicioGreaterThanEqualAndDataInicioLessThanEqualAndStatus(sdf.parse(dataInicio), sdf2.parse(dataFim), EnumStatusLocacao.CONCLUIDA);
 		} catch (ParseException e) {
 			
 		}
